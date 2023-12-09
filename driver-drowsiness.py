@@ -33,6 +33,9 @@ def main():
     status = ""
     color = (0, 0, 0)
 
+    # Add a placeholder for the webcam feed
+    frame_placeholder = st.empty()
+
     while True:
         _, frame = cap.read()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -72,9 +75,11 @@ def main():
                 cv2.circle(frame, (x, y), 1, (255, 255, 255), -1)
 
         cv2.putText(frame, status, (100, 100), cv2.FONT_HERSHEY_SIMPLEX, 1.2, color, 3)
-        st.image(frame, channels="BGR", caption="Webcam Feed")
-        key = cv2.waitKey(1)
-        if key == 27:
+        # Display the frame in Streamlit
+        frame_placeholder.image(frame, channels="BGR", caption="Webcam Feed", use_column_width=True)
+
+        # Check for key press to break the loop (ESC key)
+        if st.button("Stop"):
             break
 
 if __name__ == "__main__":
